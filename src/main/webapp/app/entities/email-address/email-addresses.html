@@ -1,0 +1,64 @@
+<div>
+    <h2>Email Addresses</h2>
+    <jhi-alert></jhi-alert>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-xs-4 no-padding-left">
+                <button class="btn btn-primary" ui-sref="email-address.new" >
+                    <span class="glyphicon glyphicon-plus"></span>
+                    <span >
+                        Create new Email Address
+                    </span>
+                </button>
+            </div>
+        </div>
+    </div>
+    <br/>
+    <div class="table-responsive">
+        <table class="jh-table table table-striped">
+            <thead>
+                <tr jh-sort="vm.predicate" ascending="vm.reverse" callback="vm.reset()">
+                    <th jh-sort-by="id"><span>ID</span> <span class="glyphicon glyphicon-sort"></span></th>
+                    <th jh-sort-by="psNumber"><span>Ps Number</span> <span class="glyphicon glyphicon-sort"></span></th>
+                    <th jh-sort-by="name"><span>Name</span> <span class="glyphicon glyphicon-sort"></span></th>
+                    <th jh-sort-by="appleMail"><span>Apple Mail</span> <span class="glyphicon glyphicon-sort"></span></th>
+                    <th jh-sort-by="groupId"><span>Group</span> <span class="glyphicon glyphicon-sort"></span></th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody infinite-scroll="vm.loadPage(vm.page + 1)" infinite-scroll-disabled="vm.page >= vm.links['last']">
+                <tr ng-repeat="emailAddress in vm.emailAddresses track by emailAddress.id">
+                    <td><a ui-sref="email-address-detail({id:emailAddress.id})">{{emailAddress.id}}</a></td>
+                    <td>{{emailAddress.psNumber}}</td>
+                    <td>{{emailAddress.name}}</td>
+                    <td>{{emailAddress.appleMail}}</td>
+                    <td>
+                        <a ui-sref="functional-group-detail({id:emailAddress.groupId})">{{emailAddress.groupId}}</a>
+                    </td>
+                    <td class="text-right">
+                        <div class="btn-group flex-btn-group-container">
+                            <button type="submit"
+                                    ui-sref="email-address-detail({id:emailAddress.id})"
+                                    class="btn btn-info btn-sm">
+                                <span class="glyphicon glyphicon-eye-open"></span>
+                                <span class="hidden-sm-down"></span>
+                            </button>
+                            <button type="submit"
+                                    ui-sref="email-address.edit({id:emailAddress.id})"
+                                    class="btn btn-primary btn-sm">
+                                <span class="glyphicon glyphicon-pencil"></span>
+                                <span class="hidden-sm-down"></span>
+                            </button>
+                            <button type="submit"
+                                    ui-sref="email-address.delete({id:emailAddress.id})"
+                                    class="btn btn-danger btn-sm">
+                                <span class="glyphicon glyphicon-remove-circle"></span>
+                                <span class="hidden-sm-down"></span>
+                            </button>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
