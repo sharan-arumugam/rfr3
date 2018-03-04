@@ -1,0 +1,24 @@
+{
+    "fluentMethods": true,
+    "relationships": [],
+    "fields": [
+        {
+            "fieldName": "imt",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "imt1",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "imt2",
+            "fieldType": "String"
+        }
+    ],
+    "changelogDate": "20180304175526",
+    "entityTableName": "functional_group",
+    "dto": "mapstruct",
+    "pagination": "infinite-scroll",
+    "service": "serviceImpl",
+    "jpaMetamodelFiltering": false
+}

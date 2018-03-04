@@ -1,0 +1,35 @@
+
+<div>
+    <h2><span>Email Address</span> {{vm.emailAddress.id}}</h2>
+    <hr>
+    <jhi-alert-error></jhi-alert-error>
+    <dl class="dl-horizontal jh-entity-details">
+        <dt><span>Ps Number</span></dt>
+        <dd>
+            <span>{{vm.emailAddress.psNumber}}</span>
+        </dd>
+        <dt><span>Name</span></dt>
+        <dd>
+            <span>{{vm.emailAddress.name}}</span>
+        </dd>
+        <dt><span>Apple Mail</span></dt>
+        <dd>
+            <span>{{vm.emailAddress.appleMail}}</span>
+        </dd>
+        <dt><span>Group</span></dt>
+        <dd>
+            <a ui-sref="functional-group-detail({id:vm.emailAddress.groupId})">{{vm.emailAddress.groupId}}</a>
+        </dd>
+    </dl>
+
+    <button type="submit"
+            ui-sref="{{ vm.previousState }}"
+            class="btn btn-info">
+        <span class="glyphicon glyphicon-arrow-left"></span>&nbsp;<span> Back</span>
+    </button>
+
+    <button type="button" ui-sref="email-address-detail.edit({id:vm.emailAddress.id})" class="btn btn-primary">
+        <span class="glyphicon glyphicon-pencil"></span>
+        <span class="hidden-sm-down"> Edit</span>
+    </button>
+</div>
