@@ -1,0 +1,23 @@
+entity EmailAddress{
+	psNumber String,
+    name String,
+    appleMail String
+}
+
+entity FunctionalGroup{
+	imt String,
+    imt1 String,
+    imt2 String
+}
+
+relationship ManyToOne {
+	EmailAddress{psNumber} to FunctionalGroup
+}
+
+// Set pagination options
+paginate EmailAddress, FunctionalGroup with infinite-scroll
+
+dto * with mapstruct
+
+// Set service options to all except few
+service all with serviceImpl
