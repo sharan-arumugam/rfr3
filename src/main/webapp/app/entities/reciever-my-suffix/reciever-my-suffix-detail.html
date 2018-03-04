@@ -1,0 +1,35 @@
+
+<div>
+    <h2><span>Reciever</span> {{vm.reciever.id}}</h2>
+    <hr>
+    <jhi-alert-error></jhi-alert-error>
+    <dl class="dl-horizontal jh-entity-details">
+        <dt><span>Ps Number</span></dt>
+        <dd>
+            <span>{{vm.reciever.psNumber}}</span>
+        </dd>
+        <dt><span>Apple Mail</span></dt>
+        <dd>
+            <span>{{vm.reciever.appleMail}}</span>
+        </dd>
+        <dt><span>Name</span></dt>
+        <dd>
+            <span>{{vm.reciever.name}}</span>
+        </dd>
+        <dt><span>Group</span></dt>
+        <dd>
+            <a ui-sref="functional-group-my-suffix-detail({id:vm.reciever.groupId})">{{vm.reciever.groupId}}</a>
+        </dd>
+    </dl>
+
+    <button type="submit"
+            ui-sref="{{ vm.previousState }}"
+            class="btn btn-info">
+        <span class="glyphicon glyphicon-arrow-left"></span>&nbsp;<span> Back</span>
+    </button>
+
+    <button type="button" ui-sref="reciever-my-suffix-detail.edit({id:vm.reciever.id})" class="btn btn-primary">
+        <span class="glyphicon glyphicon-pencil"></span>
+        <span class="hidden-sm-down"> Edit</span>
+    </button>
+</div>
