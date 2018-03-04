@@ -1,0 +1,24 @@
+entity Reciever {
+	psNumber String,
+    appleMail String,
+    name String
+}
+
+entity FunctionalGroup {
+	imt String,
+    imt1 String,
+    imt2 String
+}
+
+relationship OneToMany {
+	FunctionalGroup{functionalGroup(imt1)} to Reciever{group}
+}
+
+// Set pagination options
+paginate Reciever, FunctionalGroup with infinite-scroll
+
+dto * with mapstruct
+
+service all with serviceImpl
+// Set an angular suffix
+angularSuffix * with mySuffix
