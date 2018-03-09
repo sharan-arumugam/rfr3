@@ -47,11 +47,14 @@
             vm.isSaving = false;
         }
         
-//        FunctionalGroup.query(function (jsonResponse) {
-//        		$scope.data = angular.copy(jsonResponse);
-//        });
+        if(vm.reciever.selectTree && vm.reciever.selectTree.length) {
+        		$scope.data = vm.reciever.selectTree;
         
-        $scope.data = vm.reciever.selectTree;
+        } else {
+	        FunctionalGroup.query(function (jsonResponse) {
+	    			$scope.data = angular.copy(jsonResponse);
+	        });
+        }
         
         $scope.CustomCallback = function (item, selectedItems) {
             if (selectedItems !== undefined && selectedItems.length >= 80) {
