@@ -4,10 +4,12 @@
     <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-hidden="true"
                 ng-click="vm.clear()">&times;</button>
-        <h4 class="modal-title" id="myRecieverLabel">Edit Recipient</h4>
+        <h4 class="modal-title" id="myRecieverLabel">Add/Edit Recipient</h4>
     </div>
     <div class="modal-body">
         <jhi-alert-error></jhi-alert-error>
+        
+        <div class="col-xs-4">
         <div class="form-group">
             <label class="control-label" for="field_psNumber">PS Number</label>
             <input type="text" class="form-control" name="psNumber" id="field_psNumber"
@@ -27,21 +29,29 @@
                     ng-model="vm.reciever.appleMail"
                     />
         </div>
-
-        <div class="form-group">
-            <label for="field_group">Group</label>
-            <select required class="form-control" id="field_group" name="group" ng-model="vm.reciever.groupId" 
-            		ng-options="functionalGroup.id as 'IMT-2: ' + functionalGroup.imt2 + ' | ' + 'IMT-1: ' + functionalGroup.imt1 + ' | ' + 'IMT: ' + functionalGroup.imt for functionalGroup in vm.functionalgroups track by functionalGroup.id">
-                <option value=""></option>
-            </select>
         </div>
+
+        <div class="col-xs-8">
+           <div class="panel panel-primary">
+               <div class="panel-heading">
+                   <i class="glyphicon glyphicon-th-list"></i> Functional Groups
+               </div>
+               <multiselect-searchtree data-input-model="data" multi-select="true"
+                 data-output-model="selectedItem2" data-callback="CustomCallback(item, selectedItems)"
+                 data-select-only-leafs="false" extra-buttons="true" direct-search="true"></multiselect-searchtree>
+           </div>
+       	</div>
+       	<b ng-class="{'color-red': selectedItem2.length <= 0, 'color-green': selectedItem2.length > 0}">
+       		selected group count: {{selectedItem2.length}}
+       		{{vm.reciever.groups.length}} : {{vm.reciever.groups}}
+       	</b>
         
     </div>
     <div class="modal-footer">
         <button type="button" class="btn btn-default" data-dismiss="modal" ng-click="vm.clear()">
             <span class="glyphicon glyphicon-ban-circle"></span>&nbsp;<span>Cancel</span>
         </button>
-        <button type="submit" ng-disabled="editForm.$invalid || vm.isSaving" class="btn btn-primary">
+        <button type="submit" ng-disabled="editForm.$invalid || vm.isSaving || selectedItem2.length <= 0" class="btn btn-primary">
             <span class="glyphicon glyphicon-save"></span>&nbsp;<span>Save</span>
         </button>
     </div>

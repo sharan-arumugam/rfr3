@@ -1,10 +1,10 @@
 package com.lti.rfr.service;
 
-import com.lti.rfr.service.RecieverService;
-import com.lti.rfr.domain.Receiver;
-import com.lti.rfr.repository.RecieverRepository;
-import com.lti.rfr.service.dto.ReceiverDTO;
-import com.lti.rfr.service.mapper.RecieverMapper;
+import static java.util.stream.Collectors.toList;
+
+import java.util.List;
+import java.util.function.Predicate;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
@@ -12,6 +12,11 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.lti.rfr.domain.Receiver;
+import com.lti.rfr.repository.FunctionalGroupRepository;
+import com.lti.rfr.repository.RecieverRepository;
+import com.lti.rfr.service.dto.ReceiverDTO;
+import com.lti.rfr.service.mapper.RecieverMapper;
 
 /**
  * Service Implementation for managing Reciever.
@@ -24,22 +29,47 @@ public class RecieverServiceImpl implements RecieverService {
 
     private final RecieverRepository recieverRepository;
 
+    private final FunctionalGroupRepository functionalGroupRepository;
+
     private final RecieverMapper recieverMapper;
 
-    public RecieverServiceImpl(RecieverRepository recieverRepository, RecieverMapper recieverMapper) {
+    public RecieverServiceImpl(RecieverRepository recieverRepository, RecieverMapper recieverMapper,
+            FunctionalGroupRepository functionalGroupRepository) {
         this.recieverRepository = recieverRepository;
         this.recieverMapper = recieverMapper;
+        this.functionalGroupRepository = functionalGroupRepository;
     }
 
     /**
      * Save a reciever.
      *
-     * @param recieverDTO the entity to save
+     * @param recieverDTO
+     *            the entity to save
      * @return the persisted entity
      */
     @Override
     public ReceiverDTO save(ReceiverDTO recieverDTO) {
         log.debug("Request to save Reciever : {}", recieverDTO);
+
+        List<String> allImts = functionalGroupRepository.findAllImt();
+        List<String> allImt1s = functionalGroupRepository.findAllImt1();
+        List<String> allImt2s = functionalGroupRepository.findAllImt2();
+
+        Predicate<String> isImt = allImts::contains;
+        Predicate<String> isImt1 = allImt1s::contains;
+        Predicate<String> isImt2 = allImt2s::contains;
+
+        List<String> selectedGroups = recieverDTO.getGroups();
+
+        List<String> selectedImts = selectedGroups.stream().filter(isImt).collect(toList());
+        List<String> selectedImt1s = selectedGroups.stream().filter(isImt1).collect(toList());
+        List<String> selectedImt2s = selectedGroups.stream().filter(isImt2).collect(toList());
+
+        recieverDTO.setGroups(selectedGroups);
+        recieverDTO.setSelectedImts(selectedImts);
+        recieverDTO.setSelectedImt1s(selectedImt1s);
+        recieverDTO.setSelectedImt2s(selectedImt2s);
+
         Receiver reciever = recieverMapper.toEntity(recieverDTO);
         reciever = recieverRepository.save(reciever);
         return recieverMapper.toDto(reciever);
@@ -48,7 +78,8 @@ public class RecieverServiceImpl implements RecieverService {
     /**
      * Get all the recievers.
      *
-     * @param pageable the pagination information
+     * @param pageable
+     *            the pagination information
      * @return the list of entities
      */
     @Override
@@ -56,13 +87,14 @@ public class RecieverServiceImpl implements RecieverService {
     public Page<ReceiverDTO> findAll(Pageable pageable) {
         log.debug("Request to get all Recievers");
         return recieverRepository.findAll(pageable)
-            .map(recieverMapper::toDto);
+                .map(recieverMapper::toDto);
     }
 
     /**
      * Get one reciever by id.
      *
-     * @param id the id of the entity
+     * @param id
+     *            the id of the entity
      * @return the entity
      */
     @Override
@@ -76,7 +108,8 @@ public class RecieverServiceImpl implements RecieverService {
     /**
      * Delete the reciever by id.
      *
-     * @param id the id of the entity
+     * @param id
+     *            the id of the entity
      */
     @Override
     public void delete(Long id) {

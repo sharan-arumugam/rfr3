@@ -3,15 +3,11 @@ package com.lti.rfr.domain;
 import java.io.Serializable;
 import java.util.Objects;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
 
 import com.lti.rfr.service.dto.ReceiverDTO;
 
@@ -36,8 +32,10 @@ public class Receiver implements Serializable {
     @Column(name = "name")
     private String name;
 
-    @ManyToOne(fetch = FetchType.EAGER)
-    private FunctionalGroup group;
+    private String groups;
+    private String selectedImts;
+    private String selectedImt1s;
+    private String selectedImt2s;
 
     public Receiver() {
     }
@@ -47,7 +45,6 @@ public class Receiver implements Serializable {
         psNumber = recieverDTO.getPsNumber();
         appleMail = recieverDTO.getAppleMail();
         name = recieverDTO.getName();
-        group = new FunctionalGroup(recieverDTO.getGroupId());
     }
 
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not
@@ -99,18 +96,6 @@ public class Receiver implements Serializable {
         this.name = name;
     }
 
-    public FunctionalGroup getGroup() {
-        return group;
-    }
-
-    public Receiver group(FunctionalGroup functionalGroup) {
-        this.group = functionalGroup;
-        return this;
-    }
-
-    public void setGroup(FunctionalGroup functionalGroup) {
-        this.group = functionalGroup;
-    }
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and
     // setters here, do not remove
 
@@ -123,15 +108,47 @@ public class Receiver implements Serializable {
             return false;
         }
         Receiver reciever = (Receiver) o;
-        if (reciever.getId() == null || getId() == null) {
+        if (reciever.getPsNumber() == null || getPsNumber() == null) {
             return false;
         }
-        return Objects.equals(getId(), reciever.getId());
+        return Objects.equals(getPsNumber(), reciever.getPsNumber());
+    }
+
+    public String getGroups() {
+        return groups;
+    }
+
+    public void setGroups(String groups) {
+        this.groups = groups;
+    }
+
+    public String getSelectedImts() {
+        return selectedImts;
+    }
+
+    public void setSelectedImts(String selectedImts) {
+        this.selectedImts = selectedImts;
+    }
+
+    public String getSelectedImt1s() {
+        return selectedImt1s;
+    }
+
+    public void setSelectedImt1s(String selectedImt1s) {
+        this.selectedImt1s = selectedImt1s;
+    }
+
+    public String getSelectedImt2s() {
+        return selectedImt2s;
+    }
+
+    public void setSelectedImt2s(String selectedImt2s) {
+        this.selectedImt2s = selectedImt2s;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(getId());
+        return Objects.hashCode(getPsNumber());
     }
 
     @Override

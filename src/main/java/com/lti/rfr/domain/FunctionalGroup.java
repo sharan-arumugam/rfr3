@@ -1,19 +1,15 @@
 package com.lti.rfr.domain;
 
 import java.io.Serializable;
-import java.util.HashSet;
 import java.util.Objects;
-import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.lti.rfr.service.dto.FunctionalGroupDTO;
 
 /**
@@ -38,12 +34,7 @@ public class FunctionalGroup implements Serializable {
     @Column(name = "imt_2")
     private String imt2;
 
-    @OneToMany(mappedBy = "group")
-    @JsonIgnore
-    private Set<Receiver> functionalGroups = new HashSet<>();
-
     public FunctionalGroup() {
-
     }
 
     public FunctionalGroup(Long groupId) {
@@ -106,30 +97,6 @@ public class FunctionalGroup implements Serializable {
         this.imt2 = imt2;
     }
 
-    public Set<Receiver> getFunctionalGroups() {
-        return functionalGroups;
-    }
-
-    public FunctionalGroup functionalGroups(Set<Receiver> recievers) {
-        this.functionalGroups = recievers;
-        return this;
-    }
-
-    public FunctionalGroup addFunctionalGroup(Receiver reciever) {
-        this.functionalGroups.add(reciever);
-        reciever.setGroup(this);
-        return this;
-    }
-
-    public FunctionalGroup removeFunctionalGroup(Receiver reciever) {
-        this.functionalGroups.remove(reciever);
-        reciever.setGroup(null);
-        return this;
-    }
-
-    public void setFunctionalGroups(Set<Receiver> recievers) {
-        this.functionalGroups = recievers;
-    }
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and
     // setters here, do not remove
 

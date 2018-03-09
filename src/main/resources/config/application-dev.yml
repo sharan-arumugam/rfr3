@@ -15,9 +15,9 @@
 
 logging:
     level:
-        ROOT: DEBUG
-        com.lti.rfr: DEBUG
-        io.github.jhipster: DEBUG
+        ROOT: INFO
+        com.lti.rfr: INFO
+        io.github.jhipster: INFO
 
 spring:
     profiles:
@@ -44,7 +44,7 @@ spring:
     jpa:
         database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
         database: MYSQL
-        show-sql: true
+        show-sql: false
         properties:
             hibernate.id.new_generator_mappings: true
             hibernate.cache.use_second_level_cache: false
@@ -141,3 +141,4 @@ jhipster:
 # ===================================================================
 
 application:
+#--http://embed.plnkr.co/bKJNoG/ for multi tree
