@@ -65,12 +65,10 @@ public class RecieverServiceImpl implements RecieverService {
         List<String> selectedImt1s = selectedGroups.stream().filter(isImt1).collect(toList());
         List<String> selectedImt2s = selectedGroups.stream().filter(isImt2).collect(toList());
 
-        log.info("============%%%%=============");
-        log.info("============%%%%=============");
-        log.info("==selectedImts== :: " + selectedImts);
-        log.info("==selectedImt1s== :: " + selectedImt1s);
-        log.info("==selectedImt2s== :: " + selectedImt2s);
-        log.info("============%%%%=============");
+        recieverDTO.setGroups(selectedGroups);
+        recieverDTO.setSelectedImts(selectedImts);
+        recieverDTO.setSelectedImt1s(selectedImt1s);
+        recieverDTO.setSelectedImt2s(selectedImt2s);
 
         Receiver reciever = recieverMapper.toEntity(recieverDTO);
         reciever = recieverRepository.save(reciever);

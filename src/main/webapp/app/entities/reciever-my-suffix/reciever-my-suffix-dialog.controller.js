@@ -47,10 +47,11 @@
             vm.isSaving = false;
         }
         
-        FunctionalGroup.query(function (jsonResponse) {
-        		$scope.data = angular.copy(jsonResponse);
-        });
+//        FunctionalGroup.query(function (jsonResponse) {
+//        		$scope.data = angular.copy(jsonResponse);
+//        });
         
+        $scope.data = vm.reciever.selectTree;
         
         $scope.CustomCallback = function (item, selectedItems) {
             if (selectedItems !== undefined && selectedItems.length >= 80) {

@@ -39,7 +39,6 @@ public class UploadResource {
         boolean isUploaded = false;
 
         try {
-            
             isUploaded = uploadService.importRfr(rfr.getOriginalFilename(), rfr.getInputStream());
 
         } catch (IOException e) {
