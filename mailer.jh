@@ -1,0 +1,4 @@
+entity Mailer {
+	psNumber String
+    rfr String[]
+}
