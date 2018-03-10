@@ -1,7 +1,5 @@
 package com.lti.rfr.web.rest;
 
-import static java.lang.Math.random;
-import static java.lang.String.valueOf;
 import static java.util.stream.Collectors.groupingBy;
 import static java.util.stream.Collectors.toList;
 
@@ -11,6 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.concurrent.atomic.AtomicLong;
 import java.util.function.Predicate;
 
 import org.slf4j.Logger;
@@ -137,12 +136,11 @@ public class FunctionalGroupResource {
 
         List<ImtDTO> imtList = new ArrayList<>();
 
+        AtomicLong counter = new AtomicLong(9900000);
+
         imtMap.forEach((imt, imtDtoList) -> {
 
-            ImtDTO imtDTO = new ImtDTO();
-            imtDTO.setName(imt);
-            imtDTO.setId(valueOf(random()));
-
+            ImtDTO imtDTO = new ImtDTO(counter.addAndGet(100), imt);
             List<Imt1DTO> imt1List = new ArrayList<>();
 
             imtDtoList
@@ -151,10 +149,7 @@ public class FunctionalGroupResource {
                     .collect(groupingBy(FunctionalGroupDTO::getImt1))
                     .forEach((imt1, dtoList) -> {
 
-                        Imt1DTO imt1DTO = new Imt1DTO();
-                        imt1DTO.setName(imt1);
-                        imt1DTO.setId(valueOf(random()));
-
+                        Imt1DTO imt1DTO = new Imt1DTO(counter.addAndGet(10), imt1);
                         List<Imt2DTO> imt2List = new ArrayList<>();
 
                         dtoList.stream()
@@ -163,70 +158,10 @@ public class FunctionalGroupResource {
                                 .forEach((imt2, imt2Groups) -> {
 
                                     for (FunctionalGroupDTO im : imt2Groups) {
-                                        Imt2DTO imt2DTO = new Imt2DTO();
-                                        imt2DTO.setId(valueOf(random()));
-                                        imt2DTO.setName(imt2);
+
+                                        Imt2DTO imt2DTO = new Imt2DTO(counter.addAndGet(1), imt2);
 
                                         imt2DTO.setChildren(new ArrayList<>());
-
-                                        imt2List.add(imt2DTO);
-                                    }
-                                });
-                        imt1DTO.setChildren(imt2List);
-                        imt1List.add(imt1DTO);
-                    });
-            imtDTO.setChildren(imt1List);
-            imtList.add(imtDTO);
-        });
-
-        return imtList;
-    }
-
-    @GetMapping("/functional-group-master")
-    public List<ImtDTO> getAllFunctionalGroupMaster() throws JsonProcessingException {
-
-        log.info("getAllFunctionalGroupMaster:: ");
-
-        log.debug("REST request to get a page of FunctionalGroups");
-        List<FunctionalGroupDTO> list = functionalGroupRepository
-                .findAll()
-                .stream()
-                .map(FunctionalGroupDTO::new)
-                .collect(toList());
-
-        Map<String, List<FunctionalGroupDTO>> imtMap = list.stream()
-                .filter(dto -> null != dto.getImt())
-                .collect(groupingBy(FunctionalGroupDTO::getImt));
-
-        List<ImtDTO> imtList = new ArrayList<>();
-
-        imtMap.forEach((imt, imtDtoList) -> {
-
-            ImtDTO imtDTO = new ImtDTO();
-            imtDTO.setName(imt);
-
-            List<Imt1DTO> imt1List = new ArrayList<>();
-
-            imtDtoList
-                    .stream()
-                    .filter(dto -> null != dto.getImt1())
-                    .collect(groupingBy(FunctionalGroupDTO::getImt1))
-                    .forEach((imt1, dtoList) -> {
-
-                        Imt1DTO imt1DTO = new Imt1DTO();
-                        imt1DTO.setName(imt1);
-
-                        List<Imt2DTO> imt2List = new ArrayList<>();
-
-                        dtoList.stream()
-                                .filter(dto -> null != dto.getImt2())
-                                .collect(groupingBy(FunctionalGroupDTO::getImt2)).forEach((imt2, imt2Groups) -> {
-
-                                    for (FunctionalGroupDTO im : imt2Groups) {
-                                        Imt2DTO imt2DTO = new Imt2DTO();
-                                        imt2DTO.setId(String.valueOf(im.getId()));
-                                        imt2DTO.setName(imt2);
-
                                         imt2List.add(imt2DTO);
                                     }
                                 });
@@ -272,7 +207,8 @@ public class FunctionalGroupResource {
     }
 
     public List<ImtDTO> getAllFunctionalGroupMaster(ReceiverDTO receiverDTO) throws JsonProcessingException {
-        List<ImtDTO> masterList = getAllFunctionalGroupMaster();
+
+        List<ImtDTO> masterList = getAllFunctionalGroups(null);
 
         Predicate<String> isImtSelected = receiverDTO.getSelectedImts()::contains;
         Predicate<String> isImt1Selected = receiverDTO.getSelectedImt1s()::contains;
@@ -281,33 +217,29 @@ public class FunctionalGroupResource {
         masterList
                 .stream()
                 .forEach(imtDto -> {
-                    imtDto.setId(valueOf(random()));
-                    if (isImtSelected.test(imtDto.getName())) {
-                        imtDto.setSelected(true);
-                    }
-                    if (null == imtDto.getChildren()) {
-                        imtDto.setChildren(new ArrayList<>());
-                    }
+
+                    imtDto.setSelected(isImtSelected.test(imtDto.getName()));
+                    imtDto.setChildren(null == imtDto.getChildren()
+                            ? new ArrayList<>()
+                            : imtDto.getChildren());
+
                     imtDto.getChildren()
                             .stream()
                             .forEach(imt1Dto -> {
-                                imt1Dto.setId(valueOf(random()));
-                                if (isImt1Selected.test(imt1Dto.getName())) {
-                                    imt1Dto.setSelected(true);
-                                }
-                                if (null == imt1Dto.getChildren()) {
-                                    imt1Dto.setChildren(new ArrayList<>());
-                                }
+
+                                imt1Dto.setSelected(isImt1Selected.test(imt1Dto.getName()));
+                                imt1Dto.setChildren(null == imt1Dto.getChildren()
+                                        ? new ArrayList<>()
+                                        : imt1Dto.getChildren());
+
                                 imt1Dto.getChildren()
                                         .stream()
                                         .forEach(imt2Dto -> {
-                                            imt2Dto.setId(valueOf(random()));
-                                            if (isImt2Selected.test(imt2Dto.getName())) {
-                                                imt2Dto.setSelected(true);
-                                            }
-                                            if (null == imt2Dto.getChildren()) {
-                                                imt2Dto.setChildren(new ArrayList<>());
-                                            }
+
+                                            imt2Dto.setSelected(isImt2Selected.test(imt2Dto.getName()));
+                                            imt2Dto.setChildren(null == imt2Dto.getChildren()
+                                                    ? new ArrayList<>()
+                                                    : imt2Dto.getChildren());
                                         });
                             });
                 });

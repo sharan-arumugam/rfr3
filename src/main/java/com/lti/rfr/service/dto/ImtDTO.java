@@ -3,10 +3,11 @@ package com.lti.rfr.service.dto;
 import java.util.List;
 
 import lombok.Data;
-import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
 
 @Data
-//@EqualsAndHashCode(callSuper = false, of = { "name" })
+@NoArgsConstructor
+// @EqualsAndHashCode(callSuper = false, of = { "name" })
 public class ImtDTO {
 
     private String id;
@@ -14,4 +15,8 @@ public class ImtDTO {
     private List<Imt1DTO> children;
     private boolean selected;
 
+    public ImtDTO(Long count, String imt) {
+        id = String.valueOf(count);
+        name = imt;
+    }
 }

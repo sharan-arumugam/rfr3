@@ -89,6 +89,7 @@
 		<sonar.tests>${project.basedir}/src/test/</sonar.tests>
 
 		<!-- jhipster-needle-maven-property -->
+		<maven.test.skip>true</maven.test.skip>
 	</properties>
 
 	<dependencyManagement>

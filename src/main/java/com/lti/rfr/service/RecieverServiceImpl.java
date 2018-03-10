@@ -3,7 +3,10 @@ package com.lti.rfr.service;
 import static java.util.stream.Collectors.toList;
 
 import java.util.List;
+import java.util.function.Function;
 import java.util.function.Predicate;
+import java.util.function.Supplier;
+import java.util.stream.Stream;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -55,23 +58,21 @@ public class RecieverServiceImpl implements RecieverService {
         List<String> allImt1s = functionalGroupRepository.findAllImt1();
         List<String> allImt2s = functionalGroupRepository.findAllImt2();
 
-        Predicate<String> isImt = allImts::contains;
-        Predicate<String> isImt1 = allImt1s::contains;
-        Predicate<String> isImt2 = allImt2s::contains;
+        Supplier<Stream<String>> selectedGroups = () -> recieverDTO.getGroups().stream();
 
-        List<String> selectedGroups = recieverDTO.getGroups();
+        Function<Predicate<String>, List<String>> filterSelected = predicate -> selectedGroups
+                .get()
+                .filter(predicate)
+                .collect(toList());
 
-        List<String> selectedImts = selectedGroups.stream().filter(isImt).collect(toList());
-        List<String> selectedImt1s = selectedGroups.stream().filter(isImt1).collect(toList());
-        List<String> selectedImt2s = selectedGroups.stream().filter(isImt2).collect(toList());
-
-        recieverDTO.setGroups(selectedGroups);
-        recieverDTO.setSelectedImts(selectedImts);
-        recieverDTO.setSelectedImt1s(selectedImt1s);
-        recieverDTO.setSelectedImt2s(selectedImt2s);
+        recieverDTO.setGroups(selectedGroups.get().collect(toList()));
+        recieverDTO.setSelectedImts(filterSelected.apply(allImts::contains));
+        recieverDTO.setSelectedImt1s(filterSelected.apply(allImt1s::contains));
+        recieverDTO.setSelectedImt2s(filterSelected.apply(allImt2s::contains));
 
         Receiver reciever = recieverMapper.toEntity(recieverDTO);
         reciever = recieverRepository.save(reciever);
+
         return recieverMapper.toDto(reciever);
     }
 

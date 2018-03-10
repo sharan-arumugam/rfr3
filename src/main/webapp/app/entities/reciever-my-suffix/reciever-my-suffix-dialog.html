@@ -38,12 +38,12 @@
                </div>
                <multiselect-searchtree data-input-model="data" multi-select="true"
                  data-output-model="selectedItem2" data-callback="CustomCallback(item, selectedItems)"
-                 data-select-only-leafs="false" extra-buttons="true" direct-search="true"></multiselect-searchtree>
+                 direct-search="true" extra-buttons="true" ></multiselect-searchtree>
            </div>
        	</div>
        	<b ng-class="{'color-red': selectedItem2.length <= 0, 'color-green': selectedItem2.length > 0}">
        		selected group count: {{selectedItem2.length}}
-       		{{vm.reciever.groups.length}} : {{vm.reciever.groups}}
+       		{{vm.reciever.groups}}
        	</b>
         
     </div>
