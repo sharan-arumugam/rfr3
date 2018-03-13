@@ -3,9 +3,12 @@ package com.lti.rfr.service;
 import static java.util.Optional.ofNullable;
 import static java.util.stream.Collectors.toSet;
 
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Set;
+import java.util.function.Function;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -53,6 +56,27 @@ public class RfrServiceImpl implements RfrService {
     @Override
     public Rfr update(RfrRaw rfrRaw) {
         return rfrRepository.save(new Rfr(rfrRaw));
+    }
+
+    @Override
+    public Set<String> gettAllIdsByImtxGroup(List<String> imts, List<String> imt1s, List<String> imt2s) {
+
+        List<Rfr> imtRfrs = rfrRepository.findByImtIn(imts);
+        List<Rfr> imt1Rfrs = rfrRepository.findByImtIn(imts);
+        List<Rfr> imt2Rfrs = rfrRepository.findByImtIn(imts);
+
+        Function<List<Rfr>, Set<String>> getIdSet = rfrList -> imtRfrs.stream()
+                .map(Rfr::getRequestId)
+                .map(String::valueOf)
+                .collect(toSet());
+
+        Set<String> allRfrIds = new HashSet<>();
+
+        allRfrIds.addAll(getIdSet.apply(imtRfrs));
+        allRfrIds.addAll(getIdSet.apply(imt1Rfrs));
+        allRfrIds.addAll(getIdSet.apply(imt2Rfrs));
+
+        return allRfrIds;
     }
 
 }

@@ -15,8 +15,8 @@ public class ImtDTO {
     private List<Imt1DTO> children;
     private boolean selected;
 
-    public ImtDTO(Long count, String imt) {
-        id = String.valueOf(count);
-        name = imt;
+    public ImtDTO(long count, String name) {
+        this.id = "IMT:" + count;
+        this.name = name;
     }
 }

@@ -14,7 +14,7 @@
             url: '/recipient',
             data: {
                 authorities: ['ROLE_USER'],
-                pageTitle: 'Recievers'
+                pageTitle: 'Recipients'
             },
             views: {
                 'content@': {
@@ -118,6 +118,31 @@
             onEnter: ['$stateParams', '$state', '$uibModal', function($stateParams, $state, $uibModal) {
                 $uibModal.open({
                     templateUrl: 'app/entities/reciever-my-suffix/reciever-my-suffix-dialog.html',
+                    controller: 'RecieverMySuffixDialogController',
+                    controllerAs: 'vm',
+                    backdrop: 'static',
+                    size: 'lg',
+                    resolve: {
+                        entity: ['Reciever', function(Reciever) {
+                            return Reciever.get({id : $stateParams.id}).$promise;
+                        }]
+                    }
+                }).result.then(function() {
+                    $state.go('reciever-my-suffix', null, { reload: 'reciever-my-suffix' });
+                }, function() {
+                    $state.go('^');
+                });
+            }]
+        })
+        .state('reciever-my-suffix.mail', {
+            parent: 'reciever-my-suffix',
+            url: '/{id}/mail',
+            data: {
+                authorities: ['ROLE_USER']
+            },
+            onEnter: ['$stateParams', '$state', '$uibModal', function($stateParams, $state, $uibModal) {
+                $uibModal.open({
+                    templateUrl: 'app/entities/reciever-my-suffix/reciever-my-suffix-mail.html',
                     controller: 'RecieverMySuffixDialogController',
                     controllerAs: 'vm',
                     backdrop: 'static',

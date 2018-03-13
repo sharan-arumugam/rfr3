@@ -39,4 +39,6 @@ public interface RecieverService {
      * @param id the id of the entity
      */
     void delete(Long id);
+
+    void mail(ReceiverDTO recieverDTO);
 }

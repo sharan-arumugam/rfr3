@@ -36,6 +36,8 @@ public class Receiver implements Serializable {
     private String selectedImts;
     private String selectedImt1s;
     private String selectedImt2s;
+    
+    private String selectedRfrIds;
 
     public Receiver() {
     }
@@ -159,5 +161,13 @@ public class Receiver implements Serializable {
                 ", appleMail='" + getAppleMail() + "'" +
                 ", name='" + getName() + "'" +
                 "}";
+    }
+
+    public String getSelectedRfrIds() {
+        return selectedRfrIds;
+    }
+
+    public void setSelectedRfrIds(String selectedRfrIds) {
+        this.selectedRfrIds = selectedRfrIds;
     }
 }

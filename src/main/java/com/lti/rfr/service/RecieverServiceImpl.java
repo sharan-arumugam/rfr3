@@ -117,4 +117,9 @@ public class RecieverServiceImpl implements RecieverService {
         log.debug("Request to delete Reciever : {}", id);
         recieverRepository.delete(id);
     }
+
+    @Override
+    public void mail(ReceiverDTO recieverDTO) {
+
+    }
 }
