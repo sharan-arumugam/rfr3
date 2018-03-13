@@ -40,5 +40,5 @@ public interface RecieverService {
      */
     void delete(Long id);
 
-    void mail(ReceiverDTO recieverDTO);
+    void mail(String psNumber, String psName, ReceiverDTO recieverDTO);
 }

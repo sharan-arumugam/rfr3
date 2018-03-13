@@ -61,22 +61,23 @@ public class RfrServiceImpl implements RfrService {
     @Override
     public Set<String> gettAllIdsByImtxGroup(List<String> imts, List<String> imt1s, List<String> imt2s) {
 
-        List<Rfr> imtRfrs = rfrRepository.findByImtIn(imts);
-        List<Rfr> imt1Rfrs = rfrRepository.findByImtIn(imts);
-        List<Rfr> imt2Rfrs = rfrRepository.findByImtIn(imts);
-
-        Function<List<Rfr>, Set<String>> getIdSet = rfrList -> imtRfrs.stream()
+        Function<List<Rfr>, Set<String>> getIdSet = list -> list.stream()
                 .map(Rfr::getRequestId)
                 .map(String::valueOf)
                 .collect(toSet());
 
         Set<String> allRfrIds = new HashSet<>();
 
-        allRfrIds.addAll(getIdSet.apply(imtRfrs));
-        allRfrIds.addAll(getIdSet.apply(imt1Rfrs));
-        allRfrIds.addAll(getIdSet.apply(imt2Rfrs));
+        allRfrIds.addAll(getIdSet.apply(rfrRepository.findByImtIn(imts)));
+        allRfrIds.addAll(getIdSet.apply(rfrRepository.findByImt1In(imt1s)));
+        allRfrIds.addAll(getIdSet.apply(rfrRepository.findByImt2In(imt2s)));
 
         return allRfrIds;
+    }
+
+    @Override
+    public Object export() {
+        return null;
     }
 
 }

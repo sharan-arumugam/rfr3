@@ -9,6 +9,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -45,8 +46,14 @@ public class RfrResource {
 
     @PutMapping("/rfr")
     public ResponseEntity<Rfr> update(@RequestBody RfrRaw rfrRaw) {
-        log.info("rfrRaw:: "+rfrRaw);
+        log.info("rfrRaw:: " + rfrRaw);
         return ok(rfrService.update(rfrRaw));
+    }
+
+    @PatchMapping("/rfr")
+    public ResponseEntity<Object> export() {
+        log.info("export:: ");
+        return ok(rfrService.export());
     }
 
 }

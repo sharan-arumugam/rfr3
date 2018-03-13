@@ -19,4 +19,6 @@ public interface RfrService {
     Rfr update(RfrRaw rfrRaw);
 
     Set<String> gettAllIdsByImtxGroup(List<String> imts, List<String> imt1s, List<String> imt2s);
+
+    Object export();
 }

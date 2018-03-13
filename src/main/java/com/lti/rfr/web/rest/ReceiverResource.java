@@ -103,6 +103,9 @@ public class ReceiverResource {
     @Timed
     public ResponseEntity<String> mail(@RequestBody ReceiverDTO recieverDTO) throws URISyntaxException {
         log.info("hit mailer:::");
+
+        receiverService.mail(recieverDTO.getPsNumber(), recieverDTO.getName(), recieverDTO);
+
         return ResponseEntity.ok().body("{\"status\": \"Mail Sent\"}");
     }
 

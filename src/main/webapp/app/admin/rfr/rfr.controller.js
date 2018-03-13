@@ -27,6 +27,7 @@
         vm.transition = transition;
         vm.uploadFiles = uploadFiles;
         vm.date = new Date();
+        vm.exportXls = exportXls;
 
         vm.loadAll();
         
@@ -48,6 +49,10 @@
                 size: vm.itemsPerPage,
                 sort: sort()
             }, onSuccess, onError);
+        }
+        
+        function exportXls () {
+            Rfr.exportXls();
         }
 
         function onSuccess(data, headers) {

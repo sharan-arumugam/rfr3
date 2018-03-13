@@ -3,12 +3,17 @@ package com.lti.rfr.domain;
 import static com.lti.rfr.util.RfrUtil.formatRfrDate;
 import static com.lti.rfr.util.RfrUtil.parseLongString;
 import static com.lti.rfr.util.RfrUtil.parseRfrDate;
+import static java.lang.String.valueOf;
 import static javax.persistence.EnumType.ORDINAL;
 import static javax.persistence.EnumType.STRING;
+import static org.apache.commons.lang3.StringUtils.isNotBlank;
 import static org.springframework.format.annotation.DateTimeFormat.ISO.DATE;
 
 import java.io.Serializable;
 import java.time.LocalDate;
+import java.util.StringJoiner;
+import java.util.function.Function;
+import java.util.regex.Pattern;
 
 import javax.persistence.Entity;
 import javax.persistence.Enumerated;
@@ -159,4 +164,41 @@ public class Rfr extends AbstractAuditingEntity implements Serializable {
         return businessType.getBusinessTypeText();
     }
 
+    @JsonIgnore
+    public static final String[] fetchReportHeaders() {
+        String[] reportHeaders = { "ID",
+                "Status",
+                "Title",
+                "Request Type",
+                "Business Type",
+                "Send Date",
+                "Due Date",
+                "Apple Manager" };
+
+        return reportHeaders;
+    }
+
+    @Override
+    public String toString() {
+        return toHashSepString();
+    }
+
+    public String toHashSepString() {
+
+        Function<Object, String> handleNull = val -> isNotBlank(valueOf(val)) ? valueOf(val)
+                : Pattern.quote("$#$") + " ";
+
+        String toReturn = new StringJoiner("$#$")
+                .add(handleNull.apply(requestId))
+                .add(handleNull.apply(status()))
+                .add(handleNull.apply(requestTitle))
+                .add(handleNull.apply(getRequestType()))
+                .add(handleNull.apply(businessType()))
+                .add(handleNull.apply(formatRfrDate(sendDate)))
+                .add(handleNull.apply(formatRfrDate(dueDate)))
+                .add(handleNull.apply(appleManager))
+                .toString();
+
+        return toReturn;
+    }
 }

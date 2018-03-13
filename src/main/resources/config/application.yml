@@ -105,4 +105,9 @@ jhipster:
 # http://www.jhipster.tech/common-application-properties/
 # ===================================================================
 
+#Mail
+exchange:
+  url: https://outlook.office365.com/EWS/Exchange.asmx
+  username: odc.embassy@lntinfotech.com
+  
 application:
