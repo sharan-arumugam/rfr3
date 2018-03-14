@@ -20,7 +20,8 @@
             'save': { method:'POST' },
             'update': { method:'PUT' },
             'delete':{ method:'DELETE'},
-            'exportXls':{ method:'PATCH'}
+            'exportXls':{ method:'PATCH'},
+            'deleteAll':{ method:'DELETE'}
         });
 
         return service;

@@ -5,12 +5,12 @@
         .module('rfr3App')
         .controller('RfrDeleteController', RfrDeleteController);
 
-    RfrDeleteController.$inject = ['$uibModalInstance', 'entity', 'User'];
+    RfrDeleteController.$inject = ['$uibModalInstance', 'entity', 'Rfr'];
 
-    function RfrDeleteController ($uibModalInstance, entity, User) {
+    function RfrDeleteController ($uibModalInstance, entity, Rfr) {
         var vm = this;
 
-        vm.user = entity;
+        vm.rfr = entity;
         vm.clear = clear;
         vm.confirmDelete = confirmDelete;
 
@@ -18,11 +18,8 @@
             $uibModalInstance.dismiss('cancel');
         }
 
-        function confirmDelete (login) {
-            User.delete({login: login},
-                function () {
-                    $uibModalInstance.close(true);
-                });
+        function confirmDelete () {
+        		Rfr.deleteAll({}, () => $uibModalInstance.close(true));
         }
     }
 })();

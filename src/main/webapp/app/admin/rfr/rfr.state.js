@@ -122,8 +122,8 @@
                     controllerAs: 'vm',
                     size: 'md',
                     resolve: {
-                        entity: ['User', function(User) {
-                            return User.get({login : $stateParams.login}).$promise;
+                        entity: ['Rfr', function(Rfr) {
+                            return Rfr.query({}).$promise;
                         }]
                     }
                 }).result.then(function() {

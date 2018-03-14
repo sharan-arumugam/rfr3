@@ -5,6 +5,8 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 
+import org.apache.poi.ss.usermodel.Workbook;
+
 import com.lti.rfr.domain.Rfr;
 import com.lti.rfr.service.dto.RfrRaw;
 
@@ -20,5 +22,7 @@ public interface RfrService {
 
     Set<String> gettAllIdsByImtxGroup(List<String> imts, List<String> imt1s, List<String> imt2s);
 
-    Object export();
+    Workbook export();
+
+    void deleteAll();
 }

@@ -42,7 +42,7 @@ public class MailExchangeService {
 
         try {
             synchronized (this) {
-                sleep(5000);
+                sleep(1000);
                 emailMessage = new EmailMessage(exchangeService);
 
                 emailMessage.setSubject(subject);

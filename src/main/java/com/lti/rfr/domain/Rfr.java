@@ -177,6 +177,20 @@ public class Rfr extends AbstractAuditingEntity implements Serializable {
 
         return reportHeaders;
     }
+    
+    @JsonIgnore
+    public static final String[] fetchXlsHeaders() {
+        String[] reportHeaders = { "ID",
+                "Status",
+                "Title",
+                "Request Type",
+                "Business Type",
+                "Send Date",
+                "Due Date",
+                "Apple Manager" };
+
+        return reportHeaders;
+    }
 
     @Override
     public String toString() {
