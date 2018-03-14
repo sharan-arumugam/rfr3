@@ -139,9 +139,6 @@ public class RecieverServiceImpl implements RecieverService {
 
     @Override
     public void mail(String psNumber, String psName, ReceiverDTO recieverDTO) {
-        log.info("hit mailer service:: ");
-        log.info("" + recieverDTO.getSelectedRfrIds());
-
         List<Rfr> rfrList = rfrRepo.findByRequestIdIn(recieverDTO
                 .getSelectedRfrIds()
                 .stream()
@@ -226,7 +223,7 @@ public class RecieverServiceImpl implements RecieverService {
         htmlBody.append("</tr></tbody>");
         htmlBody.append("</table>");
 
-        emailService.sendMail("10643503", "RFR", htmlBody.toString());
+        emailService.sendMail(psNumber, "RFR", htmlBody.toString());
     }
 
 }

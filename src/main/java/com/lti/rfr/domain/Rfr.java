@@ -38,7 +38,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Entity
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class Rfr extends AbstractAuditingEntity implements Serializable {
+public class Rfr implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -177,7 +177,7 @@ public class Rfr extends AbstractAuditingEntity implements Serializable {
 
         return reportHeaders;
     }
-    
+
     @JsonIgnore
     public static final String[] fetchXlsHeaders() {
         String[] reportHeaders = { "ID",

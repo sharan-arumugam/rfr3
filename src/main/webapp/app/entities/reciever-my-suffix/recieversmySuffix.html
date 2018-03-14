@@ -18,6 +18,7 @@
         <table class="jh-table table table-striped">
             <thead>
                 <tr>
+                		<th><span>Delete</span> <span class="glyphicon"></span></th>
                     <th><span>PS Number</span> <span class="glyphicon"></span></th>
                     <th><span>Name</span> <span class="glyphicon"></span></th>
                     <th><span>Groups</span> <span class="glyphicon"></span></th>
@@ -27,6 +28,11 @@
             </thead>
             <tbody>
                 <tr ng-repeat="reciever in vm.recievers track by reciever.id">
+                		<td>
+               			<button class="btn btn-danger" ui-sref="reciever-my-suffix.delete({id:reciever.id})">
+               				<span class="glyphicon glyphicon-erase"></span>
+               			</button>
+                		</td>
                     <td><a ui-sref="reciever-my-suffix.edit({id:reciever.id})">{{reciever.psNumber}}</a></td>
                     <td>{{reciever.name}}</td>
                     <td>

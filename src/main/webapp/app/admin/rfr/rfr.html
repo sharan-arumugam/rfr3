@@ -24,7 +24,13 @@
 		 </div>
      </div>
      
-     <input type="text" ng-model="vm.search" ng-change="vm.filterText()">
+     <div class="row">
+     <br>
+	     <div class="form-group col-xs-12">
+	       <label class="control-label">Search</label>
+	       <input type="text" ng-model="vm.search" ng-change="vm.filterText()">
+	 	 </div>
+	 </div>
      
     <div class="table-responsive">
         <table class="jh-table table table-striped">
