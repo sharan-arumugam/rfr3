@@ -2,6 +2,7 @@ package com.lti.rfr.service.dto;
 
 import java.io.Serializable;
 import java.util.List;
+import java.util.Set;
 
 import com.lti.rfr.domain.Receiver;
 
@@ -24,7 +25,8 @@ public class ReceiverDTO implements Serializable {
     private List<String> selectedImt2s;
 
     private List<ImtDTO> selectTree;
-
+    private Set<String> selectedRfrIds;
+    
     public ReceiverDTO() {
     }
 

@@ -16,6 +16,7 @@ import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.liquibase.LiquibaseProperties;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
 
 import com.lti.rfr.config.ApplicationProperties;
@@ -26,6 +27,7 @@ import io.github.jhipster.config.JHipsterConstants;
 @ComponentScan
 @EnableAutoConfiguration(exclude = {MetricFilterAutoConfiguration.class, MetricRepositoryAutoConfiguration.class})
 @EnableConfigurationProperties({LiquibaseProperties.class, ApplicationProperties.class})
+@PropertySource("file:${user.home}/odc_apps/lifht/application.properties")
 public class Rfr3App {
 
     private static final Logger log = LoggerFactory.getLogger(Rfr3App.class);

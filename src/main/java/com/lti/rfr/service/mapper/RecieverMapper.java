@@ -1,12 +1,12 @@
 package com.lti.rfr.service.mapper;
 
-import static java.util.stream.Collectors.toList;
 import static org.apache.commons.collections4.CollectionUtils.isNotEmpty;
 import static org.apache.commons.lang3.StringUtils.isNotBlank;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 import java.util.function.Function;
 
 import org.slf4j.Logger;
@@ -17,6 +17,7 @@ import org.springframework.stereotype.Service;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.lti.rfr.domain.Receiver;
+import com.lti.rfr.service.RfrService;
 import com.lti.rfr.service.dto.ImtDTO;
 import com.lti.rfr.service.dto.ReceiverDTO;
 import com.lti.rfr.web.rest.FunctionalGroupResource;
@@ -29,6 +30,9 @@ public class RecieverMapper {
 
     ObjectMapper mapper = new ObjectMapper();
     private final Logger log = LoggerFactory.getLogger(RecieverMapper.class);
+
+    @Autowired
+    RfrService rfrService;
 
     @Autowired
     FunctionalGroupResource groupResource;
@@ -64,14 +68,16 @@ public class RecieverMapper {
         receiverDTO.setSelectedImt1s(deserialize.apply(reciever.getSelectedImt1s()));
         receiverDTO.setSelectedImt2s(deserialize.apply(reciever.getSelectedImt2s()));
 
+        Set<String> selectedRfrIds = rfrService.gettAllIdsByImtxGroup(
+                receiverDTO.getSelectedImts(),
+                receiverDTO.getSelectedImt1s(),
+                receiverDTO.getSelectedImt2s());
+
+        receiverDTO.setSelectedRfrIds(selectedRfrIds);
+
         List<ImtDTO> selectTree;
         try {
             selectTree = groupResource.getAllFunctionalGroupMaster(receiverDTO);
-            log.info("selectTree:: " + selectTree
-                    .stream()
-                    .map(ImtDTO::isSelected)
-                    .collect(toList()));
-
             receiverDTO.setSelectTree(selectTree);
         } catch (JsonProcessingException e) {
             e.printStackTrace();

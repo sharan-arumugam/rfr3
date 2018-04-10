@@ -19,7 +19,9 @@
             },
             'save': { method:'POST' },
             'update': { method:'PUT' },
-            'delete':{ method:'DELETE'}
+            'delete':{ method:'DELETE'},
+            'exportXls':{ method:'PATCH'},
+            'deleteAll':{ method:'DELETE'}
         });
 
         return service;

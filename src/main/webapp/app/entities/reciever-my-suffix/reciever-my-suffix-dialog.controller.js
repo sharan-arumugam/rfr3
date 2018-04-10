@@ -18,6 +18,7 @@
         vm.reciever = entity;
         vm.clear = clear;
         vm.save = save;
+        vm.mail = mail;
 
         $timeout(function (){
             angular.element('.form-group:eq(1)>input').focus();
@@ -35,6 +36,11 @@
             } else {
             		Reciever.save(vm.reciever, onSaveSuccess, onSaveError);
             }
+        }
+        
+        function mail () {
+            vm.isMailing = true;
+            Reciever.mail(vm.reciever, onSaveSuccess, onSaveError);
         }
 
         function onSaveSuccess (result) {
@@ -61,6 +67,7 @@
                 return false;
             } else {
             		vm.reciever.groups = selectedItems.flatMap(group => group.name);
+            		//vm.reciever.groups = selectedItems;
                 return true;
             }
         };

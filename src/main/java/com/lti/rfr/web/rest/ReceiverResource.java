@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.codahale.metrics.annotation.Timed;
@@ -89,7 +90,6 @@ public class ReceiverResource {
     @Timed
     public ResponseEntity<ReceiverDTO> updateReciever(@RequestBody ReceiverDTO recieverDTO) throws URISyntaxException {
         log.debug("REST request to update Reciever : {}", recieverDTO);
-
         if (recieverDTO.getId() == null) {
             return createReciever(recieverDTO);
         }
@@ -97,6 +97,16 @@ public class ReceiverResource {
         return ResponseEntity.ok()
                 .headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, recieverDTO.getId().toString()))
                 .body(result);
+    }
+
+    @RequestMapping(path = "/recievers", method = RequestMethod.PATCH)
+    @Timed
+    public ResponseEntity<String> mail(@RequestBody ReceiverDTO recieverDTO) throws URISyntaxException {
+        log.info("hit mailer:::");
+
+        receiverService.mail(recieverDTO.getPsNumber(), recieverDTO.getName(), recieverDTO);
+
+        return ResponseEntity.ok().body("{\"status\": \"Mail Sent\"}");
     }
 
     /**

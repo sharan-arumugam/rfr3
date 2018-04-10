@@ -37,12 +37,12 @@ angular.module('multiselect-searchtree').run(['$templateCache', function ($templ
     $templateCache.put('src/tree-item.tpl.html',
       "<li>\n" +
       "    <div class=\"item-container\" ng-class=\"{active: item.isActive, selected: item.selected}\"\n" +
-      "         ng-click=\"clickSelectItem(item, $event)\" ng-mouseover=\"onMouseOver(item, $event)\">\n" +
+      "          ng-mouseover=\"onMouseOver(item, $event)\">\n" +
       "        <span ng-if=\"showExpand(item)\" class=\"expand\" ng-class=\"{'expand-opened': item.isExpanded}\"\n" +
       "              ng-click=\"onExpandClicked(item, $event)\"></span>\n" +
       "\n" +
       "        <div class=\"item-details\"><input class=\"tree-checkbox\" type=\"checkbox\" ng-if=\"showCheckbox()\"\n" +
-      "                                         ng-checked=\"item.selected\"/>{{item.name}}\n" +
+      "                                         ng-checked=\"item.selected\" ng-click=\"clickSelectItem(item, $event)\"/>{{item.name}}\n" +
       "        </div>\n" +
       "    </div>\n" +
       "    <ul ng-repeat=\"child in item.children\" ng-if=\"item.isExpanded\">\n" +

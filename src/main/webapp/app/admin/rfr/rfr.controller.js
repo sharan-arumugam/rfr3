@@ -5,9 +5,9 @@
         .module('rfr3App')
         .controller('RfrController', RfrController);
 
-    RfrController.$inject = ['Upload','$timeout','Principal', 'Rfr', 'ParseLinks', 'AlertService', '$state', 'pagingParams', 'paginationConstants'];
+    RfrController.$inject = ['$filter','$scope','Upload','$timeout','Principal', 'Rfr', 'ParseLinks', 'AlertService', '$state', 'pagingParams', 'paginationConstants'];
 
-    function RfrController(Upload, $timeout, Principal, Rfr, ParseLinks, AlertService, $state, pagingParams, paginationConstants) {
+    function RfrController($filter,$scope, Upload, $timeout, Principal, Rfr, ParseLinks, AlertService, $state, pagingParams, paginationConstants) {
         var vm = this;
 
         vm.authorities = ['ROLE_USER', 'ROLE_ADMIN'];
@@ -27,6 +27,11 @@
         vm.transition = transition;
         vm.uploadFiles = uploadFiles;
         vm.date = new Date();
+        vm.deleteAll = deleteAll;
+        vm.downloadXLS = downloadXLS;
+        vm.filterText = filterText;
+        
+        vm.rfrs2;
 
         vm.loadAll();
         
@@ -41,21 +46,39 @@
                 vm.clear();
             });
         }
+        
+        function filterText () {
+        		vm.rfrs = vm.rfrs2.filter(rfr =>
+        				   (rfr.requestId+'').includes(vm.search)
+        				|| (rfr.requestTitle).includes(vm.search)
+        				|| (rfr.status).includes(vm.search)
+        				|| (rfr.skills && (rfr.skills+'').includes(vm.search))
+        				|| (rfr.fulfillment && (rfr.fulfillment).includes(vm.search))
+        				);
+        }
 
         function loadAll () {
-            Rfr.query({
-                page: pagingParams.page - 1,
-                size: vm.itemsPerPage,
-                sort: sort()
-            }, onSuccess, onError);
+            Rfr.query({}, onSuccess, onError);
+        }
+        
+        function downloadXLS () {
+            $.fileDownload('/api/rfr/export',{
+                httpMethod : "GET",
+            })
+            .done(function(e, response){
+            })
+            .fail(function(e, response){
+            });
+        }
+
+        function deleteAll () {
+            Rfr.deleteAll();
+            vm.rfrs = [];
         }
 
         function onSuccess(data, headers) {
-            //vm.links = ParseLinks.parse(headers('link'));
-            //vm.totalItems = headers('X-Total-Count');
-            //vm.queryCount = vm.totalItems;
-           // vm.page = pagingParams.page;
             vm.rfrs = data;
+            vm.rfrs2 = vm.rfrs;
         }
 
         function onError(error) {

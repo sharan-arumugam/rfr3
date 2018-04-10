@@ -15,9 +15,17 @@ public class Imt2DTO {
     private List<String> children;
     private boolean selected;
 
-    public Imt2DTO(Long id, String imt2) {
-        this.id = String.valueOf(id);
-        name = imt2;
+    private String imt2;
+    private String imt1;
+    private String imt;
+
+    public Imt2DTO(long count, String name, String imt1, String imt) {
+        this.id = "IMT-2:" + count;
+        this.name = name;
+
+        this.imt2 = name;
+        this.imt1 = imt1;
+        this.imt = imt;
     }
 
 }

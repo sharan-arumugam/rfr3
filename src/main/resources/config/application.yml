@@ -37,7 +37,7 @@ spring:
     jpa:
         open-in-view: false
         hibernate:
-            ddl-auto: update
+            ddl-auto: none
             naming:
                 physical-strategy: org.springframework.boot.orm.jpa.hibernate.SpringPhysicalNamingStrategy
                 implicit-strategy: org.springframework.boot.orm.jpa.hibernate.SpringImplicitNamingStrategy
@@ -105,4 +105,9 @@ jhipster:
 # http://www.jhipster.tech/common-application-properties/
 # ===================================================================
 
+#Mail
+exchange:
+  url: https://outlook.office365.com/EWS/Exchange.asmx
+  username: odc.embassy@lntinfotech.com
+  
 application:

@@ -17,6 +17,7 @@ import static java.util.stream.IntStream.range;
 import static java.util.stream.StreamSupport.stream;
 import static org.apache.commons.csv.CSVFormat.EXCEL;
 import static org.apache.poi.ss.usermodel.DateUtil.isCellDateFormatted;
+import static org.apache.poi.ss.usermodel.Row.MissingCellPolicy.RETURN_NULL_AND_BLANK;
 import static org.apache.poi.ss.usermodel.WorkbookFactory.create;
 
 import java.io.ByteArrayOutputStream;
@@ -33,6 +34,7 @@ import org.apache.poi.EncryptedDocumentException;
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.apache.poi.ss.usermodel.FormulaEvaluator;
 import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Row.MissingCellPolicy;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -94,9 +96,15 @@ public class ExcelUtil {
     private static final List<Map<String, String>> asListMap(Stream<Row> rowStream, FormulaEvaluator evaluator) {
 
         List<String> rowValueList = rowStream.map(row -> {
+
+            row.getSheet().getWorkbook().setMissingCellPolicy(RETURN_NULL_AND_BLANK);
+
             return toStream(row.iterator()).map(cell -> {
 
                 switch (cell.getCellTypeEnum()) {
+
+                case BLANK:
+                    return " ";
 
                 case STRING:
                     return cell.getStringCellValue();

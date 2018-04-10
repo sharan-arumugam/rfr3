@@ -5,7 +5,10 @@ import static java.lang.Long.parseLong;
 import static java.time.LocalDate.parse;
 import static java.time.format.DateTimeFormatter.ofPattern;
 import static java.util.stream.StreamSupport.stream;
+import static org.apache.commons.lang3.StringUtils.capitalize;
 import static org.apache.commons.lang3.StringUtils.isNotBlank;
+import static org.apache.commons.lang3.StringUtils.join;
+import static org.apache.commons.lang3.StringUtils.splitByCharacterTypeCamelCase;
 import static org.apache.commons.lang3.math.NumberUtils.isCreatable;
 
 import java.time.LocalDate;
@@ -17,6 +20,10 @@ import java.util.stream.Stream;
 public final class RfrUtil {
 
     private RfrUtil() {
+    }
+
+    public static String splitCamelCase(String inputString) {
+        return capitalize(join(splitByCharacterTypeCamelCase(inputString), " "));
     }
 
     public static final Map<String, String> RFR_FIELDS = new HashMap<String, String>();

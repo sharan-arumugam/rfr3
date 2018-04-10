@@ -136,11 +136,13 @@ public class FunctionalGroupResource {
 
         List<ImtDTO> imtList = new ArrayList<>();
 
-        AtomicLong counter = new AtomicLong(9900000);
+        AtomicLong imtCounter = new AtomicLong(100);
+        AtomicLong imt1Counter = new AtomicLong(2000);
+        AtomicLong imt2Counter = new AtomicLong(30000);
 
         imtMap.forEach((imt, imtDtoList) -> {
 
-            ImtDTO imtDTO = new ImtDTO(counter.addAndGet(100), imt);
+            ImtDTO imtDTO = new ImtDTO(imtCounter.addAndGet(1), imt);
             List<Imt1DTO> imt1List = new ArrayList<>();
 
             imtDtoList
@@ -149,7 +151,7 @@ public class FunctionalGroupResource {
                     .collect(groupingBy(FunctionalGroupDTO::getImt1))
                     .forEach((imt1, dtoList) -> {
 
-                        Imt1DTO imt1DTO = new Imt1DTO(counter.addAndGet(10), imt1);
+                        Imt1DTO imt1DTO = new Imt1DTO(imt1Counter.addAndGet(1), imt1, imt);
                         List<Imt2DTO> imt2List = new ArrayList<>();
 
                         dtoList.stream()
@@ -158,9 +160,7 @@ public class FunctionalGroupResource {
                                 .forEach((imt2, imt2Groups) -> {
 
                                     for (FunctionalGroupDTO im : imt2Groups) {
-
-                                        Imt2DTO imt2DTO = new Imt2DTO(counter.addAndGet(1), imt2);
-
+                                        Imt2DTO imt2DTO = new Imt2DTO(imt2Counter.addAndGet(1), imt2, imt1, imt);
                                         imt2DTO.setChildren(new ArrayList<>());
                                         imt2List.add(imt2DTO);
                                     }
@@ -235,11 +235,7 @@ public class FunctionalGroupResource {
                                 imt1Dto.getChildren()
                                         .stream()
                                         .forEach(imt2Dto -> {
-
                                             imt2Dto.setSelected(isImt2Selected.test(imt2Dto.getName()));
-                                            imt2Dto.setChildren(null == imt2Dto.getChildren()
-                                                    ? new ArrayList<>()
-                                                    : imt2Dto.getChildren());
                                         });
                             });
                 });
